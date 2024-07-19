@@ -1,5 +1,5 @@
 <template>
-   <section class="grid">
+   <section :class="'grid'">
       <Subgrid
         v-for="subgrid in store.gridBySubgrids"
         :subgrid="subgrid"

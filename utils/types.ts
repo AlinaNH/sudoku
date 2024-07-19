@@ -15,7 +15,7 @@ export type SudokuStore = {
   gridByRows: Subgrid,
   gridByColumns: Subgrid,
   activeCell: Cell | null,
-  highlightedSubgrid: Subgrid | null,
-  highlightedRow: Subgrid | null,
-  highlightedColumn: Subgrid | null,
+  highlightedSubgrid: Cell[] | null,
+  highlightedRow: Cell[] | null,
+  highlightedColumn: Cell[] | null,
 };

@@ -1,9 +1,11 @@
 <template>
   <div
+    :data-id="cell.index"
     :class="[
-      'cell',
-      { 'cell--highlighted': cell.isHighlighted },
-      { 'cell--active': cell.isActive },
+      'cell', {
+        'cell--highlighted': cell.isHighlighted,
+        'cell--active': cell.isActive,
+      },
     ]"
     @click="store.setActiveCell(cell)"
   >

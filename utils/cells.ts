@@ -5,8 +5,11 @@ export const generateCell = (index: number): Cell => ({
   isHighlighted: false,
 });
 
-export const getActiveCell = (grid: Grid, activeCell: Cell): Cell => {
+export const getActiveCell = (grid: Grid, activeCell: Cell): Cell | null => {
   const cell = grid.find(cell => cell.index === activeCell.index);
-  if (cell) cell.isActive = true;
-  return activeCell;
+  if (cell) {
+    cell.isActive = true;
+    return cell;
+  }
+  return null;
 };

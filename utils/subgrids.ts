@@ -21,14 +21,14 @@ export const splitGridBySubgridRows = (grid: Grid): Subgrid => {
 export const getHighlightedSubgrid = (
   gridBySubgrids: Subgrid,
   activeCell: Cell,
-): Subgrid | null => {
+): Cell[] | null => {
   const gridToHighlight = gridBySubgrids.find(
     subgrid => subgrid.find(cell => cell.index === activeCell.index)
   );
 
   if (gridToHighlight) {
     gridToHighlight.forEach(cell => cell.isHighlighted = true);
-    return gridToHighlight as unknown as Subgrid;
+    return gridToHighlight;
   }
 
   return null;

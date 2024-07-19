@@ -1,5 +1,5 @@
 <template>
-  <div class="subgrid">
+  <div :class="'subgrid'">
     <Cell
       v-for="cell in subgrid"
       :cell="cell"
