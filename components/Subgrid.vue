@@ -18,6 +18,6 @@ defineProps<{
  display: grid;
  grid-template-columns: repeat(3, 1fr);
  grid-template-rows: repeat(3, 1fr);
- border: 1px solid #5E626E;
+ border: 0.5px solid #383B42;
 }
 </style>

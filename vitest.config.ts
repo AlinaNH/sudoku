@@ -11,6 +11,7 @@ export default defineVitestConfig({
         'node_modules',
         'virtual:nuxt:',
         'tests',
+        '.output',
       ],
       enabled: true,
     },

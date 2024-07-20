@@ -13,3 +13,5 @@ export const getActiveCell = (grid: Grid, activeCell: Cell): Cell | null => {
   }
   return null;
 };
+
+export const validateCellValue = (value: any): boolean => NUMPAD.includes(value);

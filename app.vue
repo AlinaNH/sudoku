@@ -1,10 +1,16 @@
 <template>
   <main>
     <Grid />
+    <Numpad />
   </main>
 </template>
 
 <style>
+:root {
+  --hover-color: #C0CCB7;
+  --active-color: #789064;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -17,8 +23,10 @@ body {
 
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  gap: 5vh;
 }
 </style>

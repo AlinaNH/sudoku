@@ -31,6 +31,9 @@ export const useStore = defineStore('sudoku', {
       this.highlightedSubgrid = null;
       this.highlightedRow = null;
       this.highlightedColumn = null;
-    }
+    },
+    setCellValue(value: number) {
+      if (this.activeCell && validateCellValue(value)) this.activeCell.value = value;
+    },
   },
 });

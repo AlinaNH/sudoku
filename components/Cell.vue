@@ -34,11 +34,11 @@ const store = useStore();
 }
 
 .cell:hover {
-  background-color: #C0CCB7;
+  background-color: var(--hover-color);
 }
 
 .cell:active {
-  background-color: #789064;
+  background-color: var(--active-color);
 }
 
 .cell--highlighted {

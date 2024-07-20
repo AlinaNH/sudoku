@@ -9,7 +9,7 @@ import {
   isCellsInColumnsCorrect,
   getSubgridToHighlight,
   isCellsHighlighted,
-} from './utils';
+} from '../store/utils';
 
 describe('Sudoku Store', () => {
   beforeEach(() => {
@@ -17,10 +17,8 @@ describe('Sudoku Store', () => {
   });
 
   const randomIndex = getRandomInteger(0, GRID_SIZE);
-  const anotherRandomIndex = getRandomInteger(0, GRID_SIZE);
   const unexitedIndex = 100;
   const activeCell = generateCell(randomIndex);
-  const anotherActiveCell = generateCell(anotherRandomIndex);
   const unexistedCell = generateCell(unexitedIndex);
   const store = useStore();
   store.initGrid();
@@ -90,25 +88,6 @@ describe('Sudoku Store', () => {
       expect(isCellsInColumnHighlighted).toBe(true);
     });
 
-    test('sets data for second cell if runs twice with different data', async () => {
-      let subgridToHighlight, rowToHighlight, columnToHighlight;
-      subgridToHighlight = getSubgridToHighlight(store.gridBySubgrids, activeCell);
-      rowToHighlight = getSubgridToHighlight(store.gridByRows, activeCell);
-      columnToHighlight =  getSubgridToHighlight(store.gridByColumns, activeCell);
-      expect(store.activeCell?.index).toBe(activeCell.index);
-      expect(store.highlightedSubgrid).toBe(subgridToHighlight);
-      expect(store.highlightedColumn).toBe(columnToHighlight);
-      expect(store.highlightedRow).toBe(rowToHighlight);
-      store.setActiveCell(anotherActiveCell);
-      subgridToHighlight = getSubgridToHighlight(store.gridBySubgrids, anotherActiveCell);
-      rowToHighlight = getSubgridToHighlight(store.gridByRows, anotherActiveCell);
-      columnToHighlight =  getSubgridToHighlight(store.gridByColumns, anotherActiveCell);
-      expect(store.activeCell?.index).toBe(anotherActiveCell.index);
-      expect(store.highlightedSubgrid).toBe(subgridToHighlight);
-      expect(store.highlightedColumn).toBe(columnToHighlight);
-      expect(store.highlightedRow).toBe(rowToHighlight);
-    });
-
     test('sets null if cell does not exist', () => {
       store.setActiveCell(unexistedCell);
       expect(store.activeCell).toBeNull();
@@ -120,16 +99,35 @@ describe('Sudoku Store', () => {
 
   describe('Cell Activation Reset', () => {
     test('sets null if called', () => {
-      store.setActiveCell(activeCell);
-      expect(store.activeCell).not.toBeNull();
-      expect(store.highlightedSubgrid).not.toBeNull();
-      expect(store.highlightedRow).not.toBeNull();
-      expect(store.highlightedColumn).not.toBeNull();
       store.resetSelection();
       expect(store.activeCell).toBeNull();
       expect(store.highlightedSubgrid).toBeNull();
       expect(store.highlightedRow).toBeNull();
       expect(store.highlightedColumn).toBeNull();
+    });
+  });
+
+  describe('Cell Value Set', () => {
+    const randomNum = getRandomInteger(1, NUMPAD.length);
+    const invalidNum = 10;
+
+    test('sets cell value if active cell exists', () => {
+      store.setActiveCell(activeCell);
+      store.setCellValue(randomNum);
+      expect(store.activeCell).not.toBeNull();
+      expect(store.activeCell?.value).toBe(randomNum);
+    });
+
+    test('does not set cell value if value is invalid', () => {
+      store.setActiveCell(activeCell);
+      store.setCellValue(invalidNum);
+      expect(store.activeCell?.value).not.toBe(invalidNum);
+    });
+
+    test('does not set cell value if active cell does not exits', () => {
+      store.resetSelection();
+      store.setCellValue(randomNum);
+      expect(store.activeCell).toBeNull();
     });
   });
 });

@@ -20,7 +20,9 @@ onMounted(() => store.initGrid());
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  border: 10px solid #BDC0C7;
-  border-radius: 5px;
+  padding: 28px;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  background-color: white;
+  border-radius: 24px;
 }
 </style>
