@@ -1,21 +1,18 @@
 export type Cell = {
   index: number,
   value: number,
-  isActive: boolean,
-  isHighlighted: boolean,
+  subgrid: number,
+  row: number,
+  column: number,
 };
 
-export type Subgrid = Cell[][];
-
-export type Grid = Cell[];
-
 export type SudokuStore = {
-  grid: Grid,
-  gridBySubgrids: Subgrid,
-  gridByRows: Subgrid,
-  gridByColumns: Subgrid,
+  grid: Cell[],
   activeCell: Cell | null,
-  highlightedSubgrid: Cell[] | null,
-  highlightedRow: Cell[] | null,
-  highlightedColumn: Cell[] | null,
+};
+
+export enum GridSegments {
+  row = 'row',
+  column = 'column',
+  subgrid = 'subgrid',
 };

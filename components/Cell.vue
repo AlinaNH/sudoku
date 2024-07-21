@@ -1,24 +1,33 @@
 <template>
   <div
-    :data-id="cell.index"
+    :data-index="cell.index"
+    :data-row="cell.row"
+    :data-column="cell.column"
+    :data-subgrid="cell.subgrid"
     :class="[
       'cell', {
-        'cell--highlighted': cell.isHighlighted,
-        'cell--active': cell.isActive,
+        'cell--active': isActive,
+        'cell--highlighted': isHighLighted,
       },
     ]"
-    @click="store.setActiveCell(cell)"
+    @click="store.setActiveCell(cell.index)"
   >
     {{ cell.value }}
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const { cell } = defineProps<{
   cell: Cell,
 }>();
 
 const store = useStore();
+const isActive = computed(() => cell.index === store.activeCell?.index);
+const isHighLighted = computed(() => {
+  return cell.row === store.activeCell?.row
+    || cell.column === store.activeCell?.column
+    || cell.subgrid === store.activeCell?.subgrid
+});
 </script>
 
 <style scoped lang="css">

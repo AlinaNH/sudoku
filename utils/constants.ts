@@ -1,5 +1,5 @@
-export const GRID_SIZE = 81;
-export const SUBGRID_SIZE = 9;
-export const SUBGRID_ROW_SIZE = 3;
-export const SUBGRIDS_NUMBER_IN_LINE = 3;
+export const GRID_LENGTH = 81;
+export const GRID_DIMENSION = 9;
+export const SUBGRID_DIMENSION = 3;
+export const CELLS_PER_SUBGRID_GROUP = 27;
 export const NUMPAD = [1, 2, 3, 4, 5, 6, 7, 8, 9];

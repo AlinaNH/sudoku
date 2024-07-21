@@ -1,17 +1,28 @@
-export const generateCell = (index: number): Cell => ({
-  index: index + 1,
-  value: index + 1,
-  isActive: false,
-  isHighlighted: false,
-});
+export const generateEmptyCell = (index: number): Cell => {
+  const row = getRowByCellIndex(index);
+  const column = getColumnByCellIndex(index);
+  const subgrid = getSubgridIndex(row, column);
+  return {
+    index,
+    value: index,
+    row,
+    column,
+    subgrid,
+  };
+};
 
-export const getActiveCell = (grid: Grid, activeCell: Cell): Cell | null => {
-  const cell = grid.find(cell => cell.index === activeCell.index);
-  if (cell) {
-    cell.isActive = true;
-    return cell;
-  }
-  return null;
+const getRowByCellIndex = (index: number): number => {
+  return Math.floor(index / GRID_DIMENSION);
+};
+
+const getColumnByCellIndex = (index: number): number => {
+  return Math.floor(index % GRID_DIMENSION);
+};
+
+const getSubgridIndex = (rowIndex: number, columnIndex: number) => {
+  const subgridRow = Math.floor(rowIndex / SUBGRID_DIMENSION);
+  const subgridColumn = Math.floor(columnIndex / SUBGRID_DIMENSION)
+  return subgridRow * SUBGRID_DIMENSION + subgridColumn;
 };
 
 export const validateCellValue = (value: any): boolean => NUMPAD.includes(value);

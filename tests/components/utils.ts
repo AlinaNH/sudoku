@@ -1,18 +1,57 @@
-import type { DOMWrapper } from "@vue/test-utils";
+import type { DOMWrapper, VueWrapper } from "@vue/test-utils";
 
-export const checkIsSubgridHighlighted = (
-  subgrid: Cell[],
-  cells: DOMWrapper<Element>[]
+export const allElementsHasClass = (
+  cells: DOMWrapper<Element>[],
+  className: string,
 ): boolean => {
-  return subgrid.every(highlightedCell => {
-    return cells.find(cell => {
-      return Number(cell.attributes('data-id')) === highlightedCell.index;
-    });
+  return cells.every(cell => {
+    return cell.classes(className)
   });
 };
 
-export const isGridChanged = (currentGrid: Grid, previousGrid: Grid): boolean => {
-  return currentGrid.every((cell, index) => {
-    return cell.index === previousGrid[index].index
-  });
+export const checkNotHighlightedCellClass = (
+  wrapper: VueWrapper,
+  activeCell: DOMWrapper<Element>,
+  className: string,
+): boolean => {
+  const excludedCells = getExcludedCellsIndexes(wrapper, activeCell);
+  return wrapper
+    .findAll('.cell')
+    .filter(cell => !excludedCells.has(cell?.attributes('data-index')))
+    .every(cell => !cell.classes(className));
+};
+
+const getExcludedCellsIndexes = (
+  wrapper: VueWrapper,
+  activeCell: DOMWrapper<Element>,
+): Set<string | undefined> => {
+  const cellsToExclude = [ 
+    ...getCellsBySegment(wrapper, activeCell, GridSegments.row),
+    ...getCellsBySegment(wrapper, activeCell, GridSegments.column),
+    ...getCellsBySegment(wrapper, activeCell, GridSegments.subgrid),
+  ];
+  const cellsToExcludeIndexes = cellsToExclude.map(cell => cell.attributes('data-index'));
+  const uniqueIndexesToExclude = new Set(cellsToExcludeIndexes);
+  return uniqueIndexesToExclude;
+};
+
+ const getCellsBySegment = (
+  wrapper: VueWrapper,
+  activeCell: DOMWrapper<Element>,
+  segmentType: keyof typeof GridSegments,
+): DOMWrapper<Element>[] => {
+  const segmentIndex = activeCell.attributes(`data-${segmentType}`);
+  return wrapper.findAll(`[data-${segmentType}="${segmentIndex}"]`);
+};
+
+export const getCellValues = (wrapper: VueWrapper): (string | undefined)[] => {
+  return wrapper.findAll('.cell').map(cell => cell.attributes('data-index'));
+};
+
+export const checkCellValues = (
+  initialValues: (string | undefined)[],
+  currentValues: (string | undefined)[],
+): boolean => {
+  if (initialValues.length !== currentValues.length) return false;
+  return initialValues.every((value, index) => value === currentValues[index]);
 };

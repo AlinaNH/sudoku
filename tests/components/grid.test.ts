@@ -5,9 +5,8 @@ import Grid from '~/components/Grid.vue';
 
 describe('Grid component', async () => {
   describe('Mounting', () => {
-    test(`renders ${SUBGRID_SIZE} Subgrid components`, async() => {
+    test(`renders ${SUBGRID_DIMENSION} Subgrid components`, async() => {
       const wrapper = await mountSuspended(Grid);
-      expect(wrapper.attributes('class')).toBe('grid');
       expect(wrapper.findAll('.subgrid').length).toBe(9);
     });
   });

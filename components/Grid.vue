@@ -1,7 +1,7 @@
 <template>
    <section :class="'grid'">
       <Subgrid
-        v-for="subgrid in store.gridBySubgrids"
+        v-for="subgrid in groupBySubgrids(store.grid)"
         :subgrid="subgrid"
       />
     </section>
