@@ -4,10 +4,12 @@ export const generateEmptyCell = (index: number): Cell => {
   const subgrid = getSubgridIndex(row, column);
   return {
     index,
-    value: index,
+    value: 0,
     row,
     column,
     subgrid,
+    correctValue: 0,
+    isVariable: false,
   };
 };
 

@@ -1,9 +1,11 @@
 export type Cell = {
   index: number,
-  value: number,
+  value: number | null,
   subgrid: number,
   row: number,
   column: number,
+  correctValue: number,
+  isVariable: boolean,
 };
 
 export type SudokuStore = {

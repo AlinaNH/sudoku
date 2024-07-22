@@ -4,10 +4,13 @@
     :data-row="cell.row"
     :data-column="cell.column"
     :data-subgrid="cell.subgrid"
+    :data-variable="cell.isVariable"
     :class="[
       'cell', {
         'cell--active': isActive,
         'cell--highlighted': isHighLighted,
+        'cell--same': isSame,
+        'cell--variable': cell.isVariable,
       },
     ]"
     @click="store.setActiveCell(cell.index)"
@@ -28,6 +31,9 @@ const isHighLighted = computed(() => {
     || cell.column === store.activeCell?.column
     || cell.subgrid === store.activeCell?.subgrid
 });
+const isSame = computed(() => {
+  return cell.value && cell.value === store.activeCell?.value;
+});
 </script>
 
 <style scoped lang="css">
@@ -38,7 +44,7 @@ const isHighLighted = computed(() => {
   background-color: white;
   border: 1px solid #383B42;
   color: #333333;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -51,10 +57,18 @@ const isHighLighted = computed(() => {
 }
 
 .cell--highlighted {
-  background-color: #EBEFE7;
+  background-color: #EBF3E3;
+}
+
+.cell--same {
+  background-color: #C8DAB6;
 }
 
 .cell--active {
-  background-color: #ABBBA0;
+  background-color: #CAE9C4;
+}
+
+.cell--variable {
+  color: #32936b;
 }
 </style>

@@ -7,7 +7,7 @@
 
 <style>
 :root {
-  --hover-color: #C0CCB7;
+  --hover-color: #C6D1BE;
   --active-color: #789064;
 }
 

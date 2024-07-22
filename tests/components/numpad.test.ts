@@ -2,7 +2,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime';
 import { describe, expect, test } from 'vitest';
 import App from '~/app.vue';
 import { getRandomInteger } from '../utils';
-import { getCellValues, checkCellValues } from './utils';
+import { getCellValues, checkCellValues, getRandomCell } from './utils';
 
 describe('Numpad Component', async () => {
   const wrapper = await mountSuspended(App);
@@ -18,8 +18,7 @@ describe('Numpad Component', async () => {
     const randomNumpadButtonIndex = getRandomInteger(0, NUMPAD.length - 1);
     const numpadButton = numpadButtons[randomNumpadButtonIndex];
     const numpadButtonValue = (randomNumpadButtonIndex + 1).toString();
-    const randomCellIndex = getRandomInteger(0, GRID_LENGTH - 1);
-    const activeCell = wrapper.findComponent(`[data-index="${randomCellIndex}"]`);
+    const activeCell = getRandomCell(wrapper, true);
 
     test('does not changes cells values if no active cell', async () => {
       const initialValues = getCellValues(wrapper);
@@ -38,16 +37,24 @@ describe('Numpad Component', async () => {
     test('changes a cell value if clicking on keyboard numpad', async () => {
       const numpadButtonValue = getRandomInteger(1, NUMPAD.length).toString();
       await activeCell.trigger('click');
-      await window.dispatchEvent(new KeyboardEvent('keydown', { key: numpadButtonValue }));
-      nextTick();
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: numpadButtonValue }));
+      await nextTick();
       expect(activeCell.text()).toBe(numpadButtonValue);
     });
 
     test('does not change a cell value if clicking on incorrect keyboard button', async () => {
       await activeCell.trigger('click');
-      await window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' }));
-      nextTick();
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '0' }));
+      await nextTick();
       expect(activeCell.text()).not.toBe('0');
+    });
+
+    test('does not change a cell value if clicking on non variable cell', async () => {
+      const nonVariableCell = getRandomCell(wrapper, false, numpadButtonValue);
+      await nonVariableCell.trigger('click');
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: numpadButtonValue }));
+      await nextTick();
+      expect(nonVariableCell.text()).not.toBe(numpadButtonValue);
     });
   });
 });

@@ -1,8 +1,11 @@
 import { describe, expect, test } from 'vitest';
 import { mountSuspended } from '@nuxt/test-utils/runtime';
 import Grid from '~/components/Grid.vue';
-import { getRandomInteger } from '../utils';
-import { allElementsHasClass, checkNotHighlightedCellClass } from './utils';
+import {
+  allElementsHasClass,
+  checkNotHighlightedCellClass,
+  getRandomCell,
+} from './utils';
 
 describe('Cell component', async () => {
   const wrapper = await mountSuspended(Grid);
@@ -15,38 +18,64 @@ describe('Cell component', async () => {
 
   describe('Clicking', async () => {
     const highlightClass = 'cell--highlighted';
-    const randomIndex = getRandomInteger(0, GRID_LENGTH - 1);
-    const activeCell = wrapper.find(`[data-index="${randomIndex}"]`);
-    await activeCell.trigger('click');
+    const activeEmptyCell = getRandomCell(wrapper, true);
+    const activeFilledCell = getRandomCell(wrapper, false);
+    await activeEmptyCell.trigger('click');
   
-    test('changes background color of active cell', async () => {
-      expect(activeCell.classes('cell--active')).toBe(true);
+    test('changes a background color of an active cell', async () => {
+      expect(activeEmptyCell.classes('cell--active')).toBe(true);
     });
 
-    test('changes background color of a row where there is an active cell', async () => {
-      const rowIndex = activeCell.attributes('data-row');
+    test('changes a background color of a row where there is an active cell', async () => {
+      const rowIndex = activeEmptyCell.attributes('data-row');
       const rowElements = wrapper.findAll(`[data-row="${rowIndex}"]`);
       const isRowHighlighted = allElementsHasClass(rowElements, highlightClass);
       expect(isRowHighlighted).toBe(true);
     });
 
-    test('changes background color of a column where there is an active cell', async () => {
-      const columnIndex = activeCell.attributes('data-column');
+    test('changes a background color of a column where there is an active cell', async () => {
+      const columnIndex = activeEmptyCell.attributes('data-column');
       const columnElements = wrapper.findAll(`[data-column="${columnIndex}"]`);
       const isColumnHighlighted = allElementsHasClass(columnElements, highlightClass);
      expect(isColumnHighlighted).toBe(true);
     });
 
-    test('changes background color of a subgrid where there is an active cell', async () => {
-      const subgridIndex = activeCell.attributes('data-subgrid');
+    test('changes a background color of a subgrid where there is an active cell', async () => {
+      const subgridIndex = activeEmptyCell.attributes('data-subgrid');
       const subgridElements = wrapper.findAll(`[data-subgrid="${subgridIndex}"]`);
       const isSubgridHighlighted = allElementsHasClass(subgridElements, highlightClass);
       expect(isSubgridHighlighted).toBe(true);
     });
 
-    test('does not change background color of other cells', async () => {
-      const isOtherCellsClassNotChanged = checkNotHighlightedCellClass(wrapper, activeCell, highlightClass);
+    test('does not change a background color of other cells', async () => {
+      const isOtherCellsClassNotChanged = checkNotHighlightedCellClass(wrapper, activeEmptyCell, highlightClass);
       expect(isOtherCellsClassNotChanged).toBe(true);
+    });
+
+    test('changes a background color of cells with same value with active cell', async () => {
+      await activeFilledCell.trigger('click');
+      const sameCells = wrapper.findAll('.cell--same');
+      const isSameCellsClassChanged = sameCells.every(cell => cell.text() === activeFilledCell.text());
+      expect(isSameCellsClassChanged).toBe(true);
+    });
+
+    test('does not change a background color of cells with different value with active cell', async () => {
+      const sameCells = wrapper.findAll('.cell').filter(cell => !cell.classes('cell--same'));
+      const isSameCellsClassChanged = sameCells.every(cell => cell.text() !== activeFilledCell.text());
+      expect(isSameCellsClassChanged).toBe(true);
+    });
+
+    test('changes a class of a variable cell', async () => {
+      await activeEmptyCell.trigger('click');
+      const variableCells = wrapper.findAll('[data-variable="true"]');
+      const isVariableCellHasClass = variableCells.every(cell => cell.classes('cell--variable'));
+      expect(isVariableCellHasClass).toBe(true);
+    });
+
+    test('does not changes a class of a non-variable cell', async () => {
+      const nonVariableCells = wrapper.findAll('[data-variable="false"]');
+      const isNonVariableCellNotHasClass = nonVariableCells.every(cell => !cell.classes('cell--variable'));
+      expect(isNonVariableCellNotHasClass).toBe(true);
     });
   });
 });

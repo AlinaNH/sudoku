@@ -14,7 +14,7 @@ export const useStore = defineStore('sudoku', {
       else this.activeCell = null;
     },
     setCellValue(value: number) {
-      if (this.activeCell && validateCellValue(value)) {
+      if (this.activeCell && this.activeCell.isVariable && validateCellValue(value)) {
         this.activeCell.value = value;
       }
     },

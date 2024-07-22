@@ -1,4 +1,5 @@
-import type { DOMWrapper, VueWrapper } from "@vue/test-utils";
+import type { DOMWrapper, VueWrapper } from '@vue/test-utils';
+import { getRandomInteger } from '../utils';
 
 export const allElementsHasClass = (
   cells: DOMWrapper<Element>[],
@@ -35,7 +36,7 @@ const getExcludedCellsIndexes = (
   return uniqueIndexesToExclude;
 };
 
- const getCellsBySegment = (
+const getCellsBySegment = (
   wrapper: VueWrapper,
   activeCell: DOMWrapper<Element>,
   segmentType: keyof typeof GridSegments,
@@ -54,4 +55,16 @@ export const checkCellValues = (
 ): boolean => {
   if (initialValues.length !== currentValues.length) return false;
   return initialValues.every((value, index) => value === currentValues[index]);
+};
+
+export const getRandomCell = (
+  wrapper: VueWrapper,
+  isVariable: boolean,
+  excludedNumber?: string,
+): DOMWrapper<Element> => {
+  const cells = wrapper.findAll('.cell');
+  let variableCells = cells.filter(cell => cell.attributes('data-variable') === isVariable.toString());
+  if (excludedNumber) variableCells = variableCells.filter(cell => cell.text() !== excludedNumber);
+  const randomIndex = getRandomInteger(0, variableCells.length - 1);
+  return variableCells[randomIndex];
 };
