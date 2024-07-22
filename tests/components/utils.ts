@@ -68,3 +68,28 @@ export const getRandomCell = (
   const randomIndex = getRandomInteger(0, variableCells.length - 1);
   return variableCells[randomIndex];
 };
+
+export const getEmptyAndFilledCellsInRow = (
+  wrapper: VueWrapper
+): {
+  emptyCell: DOMWrapper<Element>,
+  filledCell: DOMWrapper<Element>,
+} => {
+  const cellsByRows = Array.from({ length: GRID_DIMENSION }, (): DOMWrapper<Element>[] => []);
+  wrapper.findAll('.cell').forEach(cell => cellsByRows[Number(cell.attributes('data-row'))].push(cell));
+  const rowWithEmptyAndFilledCells = cellsByRows.find(row => {
+    return getEmptyCellInRow(row) && getFilledCellInRow(row);
+  }) as DOMWrapper<Element>[];
+  return {
+    emptyCell: getEmptyCellInRow(rowWithEmptyAndFilledCells),
+    filledCell: getFilledCellInRow(rowWithEmptyAndFilledCells),
+  }
+};
+
+const getEmptyCellInRow = (row: DOMWrapper<Element>[]): DOMWrapper<Element> => {
+  return row.find(cell => !cell.text().length) as DOMWrapper<Element>;
+};
+
+const getFilledCellInRow = (row: DOMWrapper<Element>[]): DOMWrapper<Element> => {
+  return row.find(cell => cell.text().length) as DOMWrapper<Element>;
+};

@@ -4,6 +4,7 @@ import Grid from '~/components/Grid.vue';
 import {
   allElementsHasClass,
   checkNotHighlightedCellClass,
+  getEmptyAndFilledCellsInRow,
   getRandomCell,
 } from './utils';
 
@@ -76,6 +77,25 @@ describe('Cell component', async () => {
       const nonVariableCells = wrapper.findAll('[data-variable="false"]');
       const isNonVariableCellNotHasClass = nonVariableCells.every(cell => !cell.classes('cell--variable'));
       expect(isNonVariableCellNotHasClass).toBe(true);
+    });
+  });
+
+  describe('Error handling', () => {
+    const { emptyCell, filledCell } = getEmptyAndFilledCellsInRow(wrapper);
+
+    test('add an error class if an active cell has an incorrect value', async () => {
+      await emptyCell.trigger('click');
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: filledCell.text() }));
+      await nextTick();
+      expect(emptyCell.classes('cell--error')).toBe(true);
+    });
+
+    test('does not add an error class to all other cells', () => {
+      const otherCells = wrapper
+        .findAll('.cell')
+        .filter(cell => cell.attributes('data-index') !== emptyCell.attributes('data-index'));
+      const otherCellNotHasErrorClass = otherCells.every(cell => !cell.attributes('cell--error'));
+      expect(otherCellNotHasErrorClass).toBe(true);
     });
   });
 });

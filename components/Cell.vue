@@ -11,6 +11,7 @@
         'cell--highlighted': isHighLighted,
         'cell--same': isSame,
         'cell--variable': cell.isVariable,
+        'cell--error': isError, 
       },
     ]"
     @click="store.setActiveCell(cell.index)"
@@ -34,6 +35,7 @@ const isHighLighted = computed(() => {
 const isSame = computed(() => {
   return cell.value && cell.value === store.activeCell?.value;
 });
+const isError = computed(() => cell.value !== cell.correctValue);
 </script>
 
 <style scoped lang="css">
@@ -70,5 +72,9 @@ const isSame = computed(() => {
 
 .cell--variable {
   color: #32936b;
+}
+
+.cell--error {
+  color: tomato;
 }
 </style>
