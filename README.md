@@ -4,7 +4,7 @@ Welcome to the Sudoku Game! This project is offers a clean and intuitive interfa
 
 ## Demo
 
-Check out the live demo of the Sudoku Game on `https://play-sudoku-game.vercel.app/`.
+Check out the live demo of the Sudoku Game [https://play-sudoku-game.vercel.app/](https://play-sudoku-game.vercel.app/).
 
 ## Setup
 
