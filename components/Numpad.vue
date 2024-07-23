@@ -2,6 +2,7 @@
   <section class="numpad">
     <button
       v-for="num in NUMPAD"
+      :disabled="isDisabled(num)"
       class="numpad__button"
       @click="store.setCellValue(num)"
     >
@@ -14,6 +15,10 @@
 const store = useStore();
 
 const setCellValue = (e: KeyboardEvent) => store.setCellValue(+e.key);
+
+const isDisabled = (num: number): boolean => {
+  return store.grid.filter(cell => cell.value === num).length === GRID_DIMENSION;
+};
 
 onMounted(() => window.addEventListener('keydown', setCellValue));
 onUnmounted(() => window.removeEventListener('keydown', setCellValue));
@@ -46,5 +51,9 @@ onUnmounted(() => window.removeEventListener('keydown', setCellValue));
 
 .numpad__button:active {
   background-color: var(--active-color);
+}
+
+.numpad__button:disabled {
+  opacity: 0.5;
 }
 </style>

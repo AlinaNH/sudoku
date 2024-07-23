@@ -7,6 +7,8 @@ import { getCellValues, checkCellValues, getRandomCell } from './utils';
 describe('Numpad Component', async () => {
   const wrapper = await mountSuspended(App);
   const numpadButtons = wrapper.findAll('.numpad__button');
+  const randomNumpadButtonIndex = getRandomInteger(0, NUMPAD.length - 1);
+  const numpadButton = numpadButtons[randomNumpadButtonIndex];
 
   describe('Mounting', () => {
     test(`is rendered ${NUMPAD.length} buttons`, () => {
@@ -15,8 +17,6 @@ describe('Numpad Component', async () => {
   });
 
   describe('Clicking', () => {
-    const randomNumpadButtonIndex = getRandomInteger(0, NUMPAD.length - 1);
-    const numpadButton = numpadButtons[randomNumpadButtonIndex];
     const numpadButtonValue = (randomNumpadButtonIndex + 1).toString();
     const activeCell = getRandomCell(wrapper, true);
 
@@ -55,6 +55,23 @@ describe('Numpad Component', async () => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: numpadButtonValue }));
       await nextTick();
       expect(nonVariableCell.text()).not.toBe(numpadButtonValue);
+    });
+  });
+
+  describe('Disabling', () => {
+    test('disables a button if all cells filled with its value', async () => {
+      const correctCells = wrapper.findAll(`[data-correct="${numpadButton.text()}"]`);
+      for (const cell of correctCells) {
+        await cell.trigger('click');
+        await numpadButton.trigger('click');
+      }
+      expect(numpadButton.attributes().hasOwnProperty('disabled')).toBe(true);
+    });
+
+    test('does not disable all other buttons', () => {
+      const otherButtons = numpadButtons.filter(button => button.text() !== numpadButton.text());
+      const areNotDisabled = otherButtons.every(button => !button.attributes().hasOwnProperty('disabled'));
+      expect(areNotDisabled).toBe(true);
     });
   });
 });

@@ -5,6 +5,7 @@
     :data-column="cell.column"
     :data-subgrid="cell.subgrid"
     :data-variable="cell.isVariable"
+    :data-correct="cell.correctValue"
     :class="[
       'cell', {
         'cell--active': isActive,
