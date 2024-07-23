@@ -44,7 +44,6 @@ const isError = computed(() => cell.value && cell.value !== cell.correctValue);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
   border: 1px solid #383B42;
   color: #333333;
   font-size: 24px;
