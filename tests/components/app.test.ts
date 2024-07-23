@@ -14,5 +14,9 @@ describe('App component', async () => {
     test('renders a Numpad component', async() => {
       expect(wrapper.find('.numpad').exists()).toBe(true);
     });
+
+    test('renders a GameInfo component', async() => {
+      expect(wrapper.find('.game-info').exists()).toBe(true);
+    });
   });
 });

@@ -1,5 +1,6 @@
 <template>
   <main>
+    <GameInfo />
     <Grid />
     <Numpad />
   </main>
