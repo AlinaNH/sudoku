@@ -45,15 +45,16 @@ onUnmounted(() => window.removeEventListener('keydown', setCellValue));
   cursor: pointer;
 }
 
-.numpad__button:hover {
+.numpad__button:hover:enabled {
   background-color: var(--hover-color);
 }
 
-.numpad__button:active {
+.numpad__button:active:enabled {
   background-color: var(--active-color);
 }
 
 .numpad__button:disabled {
   opacity: 0.5;
+  cursor: default;
 }
 </style>
