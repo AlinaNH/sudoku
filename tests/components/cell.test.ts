@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'vitest';
 import { mountSuspended } from '@nuxt/test-utils/runtime';
-import Grid from '~/components/Grid.vue';
 import {
   allElementsHasClass,
   checkNotHighlightedCellClass,
   getEmptyAndFilledCellsInRow,
   getRandomCell,
 } from './utils';
+import App from '~/app.vue';
 
 describe('Cell component', async () => {
-  const wrapper = await mountSuspended(Grid);
+  const wrapper = await mountSuspended(App);
 
   describe('Mounting', () => {
     test(`is rendered in the amount of ${GRID_LENGTH}`, async () => {

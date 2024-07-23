@@ -35,7 +35,7 @@ const isHighLighted = computed(() => {
 const isSame = computed(() => {
   return cell.value && cell.value === store.activeCell?.value;
 });
-const isError = computed(() => cell.value !== cell.correctValue);
+const isError = computed(() => cell.value && cell.value !== cell.correctValue);
 </script>
 
 <style scoped lang="css">
