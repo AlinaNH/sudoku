@@ -31,17 +31,17 @@ onUnmounted(() => window.removeEventListener('keydown', setCellValue));
 }
 
 .numpad__button {
-  width: 50px;
-  height: 50px;
+  width: 3.125rem;
+  height: 3.125rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 1.5rem;
   background-color: white;
   color: #333333;
   border: none;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);;
-  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
 }
 
