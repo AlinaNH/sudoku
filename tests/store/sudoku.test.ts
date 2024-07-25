@@ -120,4 +120,13 @@ describe('Sudoku Store', () => {
       expect(store.activeCell?.value).not.toBe(randomNum);
     });
   });
+
+  describe('Increment Errors', () => {
+    test('increments errors if invalid cell value set', () => {
+      const invalidValue = NUMPAD.filter(num => num !== activeCell.correctValue)[0];
+      store.setActiveCell(unexitedCellIndex);
+      store.setCellValue(invalidValue);
+      expect(store.errors).toBe(1);
+    });
+  });
 });

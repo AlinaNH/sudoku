@@ -10,18 +10,21 @@
     </div>
     <div class="game-info-section disabled">
       <span class="game-info-section__title">
-        Score
+        Score 
       </span>
       <span class="game-info-section__text">
         Soming soon
       </span>
     </div>
-    <div class="game-info-section disabled">
+    <div class="game-info-section">
       <span class="game-info-section__title">
         Errors
       </span>
-      <span class="game-info-section__text">
-        Soming soon
+      <span
+        id="errors"
+        class="game-info-section__text"
+      >
+        {{ store.errors }} / {{ MAX_ERRORS }}
       </span>
     </div>
     <div class="game-info-section disabled">
@@ -35,6 +38,11 @@
   </section>
 </template>
 
+<script setup lang="ts">
+import { MAX_ERRORS } from '@/utils/constants';
+const store = useStore();
+</script>
+
 <style scoped lang="css">
 .game-info {
   display: flex;
@@ -42,7 +50,7 @@
 }
 
 .game-info-section {
-  flex: 1;
+  width: 7.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;

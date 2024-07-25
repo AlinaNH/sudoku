@@ -3,6 +3,7 @@ export const useStore = defineStore('sudoku', {
     return {
       grid: [],
       activeCell: null,
+      errors: 0,
     };
   },
   actions: {
@@ -16,7 +17,11 @@ export const useStore = defineStore('sudoku', {
     setCellValue(value: number) {
       if (this.activeCell && this.activeCell.isVariable && validateCellValue(value)) {
         this.activeCell.value = value;
+        if (value !== this.activeCell.correctValue) this.incrementErrors();
       }
+    },
+    incrementErrors() {
+      this.errors += 1;
     },
   },
 });
