@@ -41,3 +41,20 @@ export const groupCellsSegments = (
   grid.forEach(cell => result[cell[segmentType]].push(cell));
   return result;
 };
+
+export const loseGame = (store: SudokuPiniaStore) => {
+  const gridByRows = groupCellsSegments(store.grid, GridSegments.row);
+  const rowToLose = gridByRows.find(row => row.filter(cell => cell.isVariable).length >= MAX_ERRORS) as Cell[];
+  const valueToLose = rowToLose.find(cell => !cell.isVariable)?.value as number;
+  let count = 0;
+  for (let i = 0; i < rowToLose.length; i++) {
+    const cell = rowToLose[i];
+    if (cell.isVariable) {
+      store.setActiveCell(cell.index);
+      store.setCellValue(valueToLose);
+      count++;
+      
+      if (count === MAX_ERRORS) break;
+    }
+  }
+};

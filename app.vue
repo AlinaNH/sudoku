@@ -5,6 +5,7 @@
     <Numpad />
     <TransitionGroup>
       <WinModal v-if="store.isWin" />
+      <LoseModal v-if="store.isLose" />
     </TransitionGroup>
   </main>
 </template>

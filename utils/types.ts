@@ -1,3 +1,5 @@
+import type { Store } from 'pinia';
+
 export type Cell = {
   index: number,
   value: number | null,
@@ -13,6 +15,8 @@ export type SudokuStore = {
   activeCell: Cell | null,
   errors: number,
   isWin: boolean,
+  isLose: boolean,
+  isRetry: boolean,
 };
 
 export enum GridSegments {
@@ -20,3 +24,11 @@ export enum GridSegments {
   column = 'column',
   subgrid = 'subgrid',
 };
+
+export type SudokuPiniaStore = Store<"sudoku", SudokuStore, {}, {
+  startGame(): void;
+  setActiveCell(index: number): void;
+  setCellValue(value: number): void;
+  incrementErrors(): void;
+  tryAgain(): void;
+}>

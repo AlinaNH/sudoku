@@ -8,6 +8,7 @@ import {
   checkIsSubgridIndexesCorrect,
   getRandomVariableCell,
   isValuesRepeatedInSegment,
+  loseGame,
 } from '../store/utils';
 
 describe('Sudoku Store', () => {
@@ -19,6 +20,8 @@ describe('Sudoku Store', () => {
 
   describe('Grid Initialization', () => {
     store.startGame();
+
+    test(`generates a grid with ${GRID_LENGTH} length`, () => {
       const isLengthCorrect = store.grid.length === GRID_LENGTH;
       expect(isLengthCorrect).toBe(true);
     });
@@ -80,6 +83,7 @@ describe('Sudoku Store', () => {
     store.startGame();
     const activeCell = getRandomVariableCell(store.grid);
     const unexitedCellIndex = GRID_LENGTH + 1;
+
     test('sets an active cell if an index is valid', async () => {
       store.setActiveCell(activeCell.index);
       expect(store.activeCell?.index).toBe(activeCell.index);
@@ -92,7 +96,12 @@ describe('Sudoku Store', () => {
   });
 
   describe('Cell Value Set', () => {
+    store.startGame();
+    const activeCell = getRandomVariableCell(store.grid);
+    const unexitedCellIndex = GRID_LENGTH + 1;
+    const unexitedNum = NUMPAD.length + 1;
     const randomNum = getRandomInteger(1, NUMPAD.length);
+
     test('sets cell value if active cell exists', () => {
       store.setActiveCell(activeCell.index);
       store.setCellValue(randomNum);
@@ -137,6 +146,24 @@ describe('Sudoku Store', () => {
       store.setActiveCell(activeCell.index);
       store.setCellValue(invalidValue);
       expect(store.errors).toBe(1);
+    });
+
+    test(`sets isLose true if errors value is equal to ${MAX_ERRORS}`, () => {
+      store.startGame();
+      loseGame(store);
+      expect(store.errors).toBe(MAX_ERRORS);
+      expect(store.isLose).toBe(true);
+    });
+  });
+
+  describe('Try Again', () => {
+    test('sets isRetry false if called', () => {
+      store.startGame();
+      loseGame(store);
+      store.tryAgain();
+      expect(store.errors).toBe(MAX_ERRORS - 1);
+      expect(store.isLose).toBe(false);
+      expect(store.isRetry).toBe(false);
     });
   });
 });

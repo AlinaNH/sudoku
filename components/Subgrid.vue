@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 defineProps<{
-  subgrid: Grid,
+  subgrid: Cell[],
 }>();
 </script>
 

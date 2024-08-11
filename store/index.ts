@@ -5,6 +5,9 @@ export const useStore = defineStore('sudoku', {
       activeCell: null,
       errors: 0,
       isWin: false,
+      isLose: false,
+      isRetry: true,
+    }
   },
   actions: {
     startGame() {
@@ -24,6 +27,12 @@ export const useStore = defineStore('sudoku', {
     },
     incrementErrors() {
       this.errors += 1;
+      if(this.errors === MAX_ERRORS) this.isLose = true;
     },
+    tryAgain() {
+      this.errors -= 1;
+      this.isLose = false;
+      this.isRetry = false;
+    }
   },
 });

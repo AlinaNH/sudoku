@@ -93,3 +93,37 @@ const getEmptyCellInRow = (row: DOMWrapper<Element>[]): DOMWrapper<Element> => {
 const getFilledCellInRow = (row: DOMWrapper<Element>[]): DOMWrapper<Element> => {
   return row.find(cell => cell.text().length) as DOMWrapper<Element>;
 };
+
+const groupCellBySegments = (
+  wrapper: VueWrapper,
+  segmentType: keyof typeof GridSegments,
+): DOMWrapper<Element>[][] => {
+  const result = Array.from({ length: GRID_DIMENSION }, (): DOMWrapper<Element>[] => []);
+  const cells = wrapper.findAll('.cell');
+  cells.forEach(cell => result[Number(cell.attributes(`data-${segmentType}`))].push(cell));
+  return result;
+};
+
+export const loseGame = async (wrapper: VueWrapper) => {
+  const gridByRows = groupCellBySegments(wrapper, GridSegments.row);
+
+  const rowToLose = gridByRows.find(row => row.filter(cell => {
+    return cell.attributes('data-variable') === 'true';
+  }).length >= MAX_ERRORS) as DOMWrapper<Element>[];
+
+  const valueToLose = rowToLose.find(cell => {
+    return cell.attributes('data-variable') == 'false';
+  })?.attributes('data-correct') as string;
+
+  let count = 0;
+  for (const cell of rowToLose) {
+    if (cell.attributes('data-variable') === 'true') {
+      await cell.trigger('click');
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: valueToLose }));
+      await nextTick();
+      count++;
+
+      if (count === MAX_ERRORS) break;
+    }
+  }
+};
