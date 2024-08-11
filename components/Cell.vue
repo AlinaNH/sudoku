@@ -22,21 +22,21 @@
 </template>
 
 <script setup lang="ts">
-const { cell } = defineProps<{
+const props = defineProps<{
   cell: Cell,
 }>();
 
 const store = useStore();
-const isActive = computed(() => cell.index === store.activeCell?.index);
+const isActive = computed(() => props.cell.index === store.activeCell?.index);
 const isHighLighted = computed(() => {
-  return cell.row === store.activeCell?.row
-    || cell.column === store.activeCell?.column
-    || cell.subgrid === store.activeCell?.subgrid
+  return props.cell.row === store.activeCell?.row
+    || props.cell.column === store.activeCell?.column
+    || props.cell.subgrid === store.activeCell?.subgrid
 });
 const isSame = computed(() => {
-  return cell.value && cell.value === store.activeCell?.value;
+  return props.cell.value && props.cell.value === store.activeCell?.value;
 });
-const isError = computed(() => cell.value && cell.value !== cell.correctValue);
+const isError = computed(() => props.cell.value && props.cell.value !== props.cell.correctValue);
 </script>
 
 <style scoped lang="css">
@@ -62,7 +62,7 @@ const isError = computed(() => cell.value && cell.value !== cell.correctValue);
 }
 
 .cell--same {
-  background-color: #C8DAB6;
+  background-color: var(--primary-color);
 }
 
 .cell--active {
