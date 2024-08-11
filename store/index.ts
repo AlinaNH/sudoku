@@ -4,10 +4,11 @@ export const useStore = defineStore('sudoku', {
       grid: [],
       activeCell: null,
       errors: 0,
-    };
+      isWin: false,
   },
   actions: {
-    initGrid() {
+    startGame() {
+      this.$reset();
       this.grid = generateGrid();
     },
     setActiveCell(index: number) {
@@ -18,6 +19,7 @@ export const useStore = defineStore('sudoku', {
       if (this.activeCell && this.activeCell.isVariable && validateCellValue(value)) {
         this.activeCell.value = value;
         if (value !== this.activeCell.correctValue) this.incrementErrors();
+        if (isLastValueSet(this.grid)) this.isWin = true;
       }
     },
     incrementErrors() {

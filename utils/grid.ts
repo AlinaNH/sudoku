@@ -96,3 +96,7 @@ const generateGridWithBlanks = (grid: Cell[], emptyCellsCount: number) => {
     grid[cellIndexes[i]].isVariable = true;
   }
 };
+
+export const isLastValueSet = (grid: Cell[]): boolean => {
+  return grid.every(cell => cell.value === cell.correctValue);
+};

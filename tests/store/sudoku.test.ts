@@ -16,13 +16,9 @@ describe('Sudoku Store', () => {
   });
 
   const store = useStore();
-  store.initGrid();
-  const activeCell = getRandomVariableCell(store.grid);
-  const unexitedCellIndex = GRID_LENGTH + 1;
-  const unexitedNum = NUMPAD.length + 1;
 
   describe('Grid Initialization', () => {
-    test('generates a grid with ${GRID_LENGTH} length', () => {
+    store.startGame();
       const isLengthCorrect = store.grid.length === GRID_LENGTH;
       expect(isLengthCorrect).toBe(true);
     });
@@ -81,6 +77,9 @@ describe('Sudoku Store', () => {
   });
 
   describe('Cell Activation', () => {
+    store.startGame();
+    const activeCell = getRandomVariableCell(store.grid);
+    const unexitedCellIndex = GRID_LENGTH + 1;
     test('sets an active cell if an index is valid', async () => {
       store.setActiveCell(activeCell.index);
       expect(store.activeCell?.index).toBe(activeCell.index);
@@ -119,12 +118,23 @@ describe('Sudoku Store', () => {
       store.setCellValue(randomNum);
       expect(store.activeCell?.value).not.toBe(randomNum);
     });
+
+    test('sets isWin true if all cells values are set correctly', () => {
+      const variableCells = store.grid.filter(cell => cell.isVariable);
+      variableCells.forEach(cell => {
+        store.setActiveCell(cell.index);
+        store.setCellValue(cell.correctValue);
+      });
+      expect(store.isWin).toBe(true);
+    });
   });
 
   describe('Increment Errors', () => {
     test('increments errors if invalid cell value set', () => {
+      store.startGame();
+      const activeCell = getRandomVariableCell(store.grid);
       const invalidValue = NUMPAD.filter(num => num !== activeCell.correctValue)[0];
-      store.setActiveCell(unexitedCellIndex);
+      store.setActiveCell(activeCell.index);
       store.setCellValue(invalidValue);
       expect(store.errors).toBe(1);
     });

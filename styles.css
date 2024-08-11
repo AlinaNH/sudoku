@@ -35,3 +35,89 @@ main {
   gap: 5vh;
 }
 
+.button {
+  font-family: Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: #333333;
+  border: none;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.button-bordered {
+  border: 1px solid rgb(209 213 219);
+  box-shadow: none;
+}
+
+.button-filled {
+  background-color: var(--primary-color);
+}
+
+.button-lg {
+  font-size: 1rem;
+  padding: 0.9rem 1.5rem;
+}
+
+.button:hover:enabled {
+  background-color: var(--hover-color);
+}
+
+.button:active:enabled {
+  background-color: var(--active-color);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.modal-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(107 114 128 / 0.75);
+}
+
+.modal {
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow-lg);
+  background-color: white;
+  max-width: 35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vh;
+}
+
+.modal__title {
+  font-size: 1.5rem;
+}
+
+.modal__text {
+  text-align: center;
+}
+
+.modal__buttons {
+  display: flex;
+  gap: 1vh;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}

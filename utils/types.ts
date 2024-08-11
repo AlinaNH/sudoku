@@ -12,6 +12,7 @@ export type SudokuStore = {
   grid: Cell[],
   activeCell: Cell | null,
   errors: number,
+  isWin: boolean,
 };
 
 export enum GridSegments {

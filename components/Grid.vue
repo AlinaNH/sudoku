@@ -10,7 +10,7 @@
 <script setup lang="ts">
 const store = useStore();
 
-onMounted(() => store.initGrid());
+onMounted(() => store.startGame());
 </script>
 
 <style scoped lang="css">
